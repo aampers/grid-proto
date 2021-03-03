@@ -1,20 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import useCanvas from '../../hooks/useCanvas';
-import { useMouseState } from '../../store/mouse/context';
+import { useMouseState, useMouseDispatch } from '../../store/mouse/context';
+import {
+	setIsMouseDownAction,
+	setMousePosAction,
+} from '../../store/mouse/actions';
+import throttle from 'lodash.throttle';
 
 const Canvas = ({ draw, options = {}, ...rest }) => {
 	const { context } = options;
 	const canvasRef = useCanvas(draw, { context });
-	const {
-		handleMouseDown,
-		handleMouseUp,
-		handleMouseMove,
-		useMouseDown,
-	} = useMouseState();
+	const { isMouseDown } = useMouseState();
+	const dispatch = useMouseDispatch();
 
-	const [mouseDown] = useMouseDown;
-	console.log('mouseDown', mouseDown);
+	const handleMouseDown = () => dispatch(setIsMouseDownAction(true));
+	const handleMouseUp = () => dispatch(setIsMouseDownAction(false));
+	const handleMouseEnter = ({ buttons }) =>
+		buttons || dispatch(setIsMouseDownAction(false));
+
+	const handleMouseMove = throttle((event) => {
+		if (isMouseDown) {
+			dispatch(setMousePosAction([event.clientX, event.clientY]));
+		}
+	}, 16);
 
 	return (
 		<canvas
@@ -22,6 +31,7 @@ const Canvas = ({ draw, options = {}, ...rest }) => {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			onMouseMove={handleMouseMove}
+			onMouseEnter={handleMouseEnter}
 			{...rest}
 		/>
 	);

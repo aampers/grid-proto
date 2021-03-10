@@ -18,7 +18,7 @@ const normalizeRotation = (min, max, deadzone, multiplier) => (
 	return newValue;
 };
 
-const normalizeX = normalizeRotation(0, 1.35, 1, -0.001);
+const normalizeX = normalizeRotation(0, 1.3, 1, -0.001);
 const normalizeZ = normalizeRotation(-Infinity, Infinity, 1, 0.003);
 
 const Grid = (props) => {
@@ -41,7 +41,8 @@ const Grid = (props) => {
 
 	return (
 		<div id='grid-container'>
-			<Canvas draw={draw} width='500px' height='500px' />;
+			<Canvas draw={draw} width='1500px' height='1500px' />
+			{[]}
 		</div>
 	);
 };

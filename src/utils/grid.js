@@ -70,12 +70,6 @@ export const rotateGrid = (grid, options) => {
 				[0, 0, 1],
 			];
 
-			const translateMatrixY = [
-				[1, 0, 0],
-				[0, 1, -cosX * 700 + 600],
-				[0, 0, 1],
-			];
-
 			const p0a = matrixDotProduct(translateMatrixA, p0);
 			const p1a = matrixDotProduct(translateMatrixA, p1);
 			const p2a = matrixDotProduct(translateMatrixA, p2);
@@ -91,15 +85,10 @@ export const rotateGrid = (grid, options) => {
 			const p2c = matrixDotProduct(translateMatrixB, p2b);
 			const p3c = matrixDotProduct(translateMatrixB, p3b);
 
-			const p0da = matrixDotProduct(translateMatrixY, p0c);
-			const p1da = matrixDotProduct(translateMatrixY, p1c);
-			const p2da = matrixDotProduct(translateMatrixY, p2c);
-			const p3da = matrixDotProduct(translateMatrixY, p3c);
-
-			const p0d = matrixDotProduct(xRotationMatrix, p0da);
-			const p1d = matrixDotProduct(xRotationMatrix, p1da);
-			const p2d = matrixDotProduct(xRotationMatrix, p2da);
-			const p3d = matrixDotProduct(xRotationMatrix, p3da);
+			const p0d = matrixDotProduct(xRotationMatrix, p0c);
+			const p1d = matrixDotProduct(xRotationMatrix, p1c);
+			const p2d = matrixDotProduct(xRotationMatrix, p2c);
+			const p3d = matrixDotProduct(xRotationMatrix, p3c);
 
 			const centerX = (p0d[0][0] + p2d[0][0]) / 2;
 			const centerY = (p0d[1][0] + p2d[1][0]) / 2;

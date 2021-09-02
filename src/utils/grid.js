@@ -1,7 +1,7 @@
 import Space from '../classes/space';
 import { matrixDotProduct } from './matrix';
 
-export const setup = ({ height = 5, width = 5 } = {}) => {
+export const setup = ({ height = 15, width = 15 } = {}) => {
 	const spaces = [];
 
 	// todo useRef here
@@ -22,11 +22,11 @@ export const setup = ({ height = 5, width = 5 } = {}) => {
 export const rotateGrid = (grid, options) => {
 	let { padding, size, xRotation, zRotation } = options;
 
-	xRotation = xRotation || 1;
+	xRotation = xRotation == null ? 1 : xRotation;
 	zRotation = zRotation || 1;
 
-	const xCenter = (size * 5) / 2 + padding;
-	const yCenter = (size * 5) / 2 + padding;
+	const xCenter = (size * 15) / 2 + padding;
+	const yCenter = (size * 15) / 2 + padding;
 	const sinZ = Math.sin(zRotation);
 	const cosZ = Math.cos(zRotation);
 	const sinX = Math.sin(xRotation);
@@ -70,26 +70,6 @@ export const rotateGrid = (grid, options) => {
 				[0, 0, 1],
 			];
 
-			// const p0a = matrixDotProduct(translateMatrixA, p0);
-			// const p1a = matrixDotProduct(translateMatrixA, p1);
-			// const p2a = matrixDotProduct(translateMatrixA, p2);
-			// const p3a = matrixDotProduct(translateMatrixA, p3);
-
-			// const p0b = matrixDotProduct(zRotationMatrix, p0a);
-			// const p1b = matrixDotProduct(zRotationMatrix, p1a);
-			// const p2b = matrixDotProduct(zRotationMatrix, p2a);
-			// const p3b = matrixDotProduct(zRotationMatrix, p3a);
-
-			// const p0c = matrixDotProduct(translateMatrixB, p0b);
-			// const p1c = matrixDotProduct(translateMatrixB, p1b);
-			// const p2c = matrixDotProduct(translateMatrixB, p2b);
-			// const p3c = matrixDotProduct(translateMatrixB, p3b);
-
-			// const p0d = matrixDotProduct(xRotationMatrix, p0c);
-			// const p1d = matrixDotProduct(xRotationMatrix, p1c);
-			// const p2d = matrixDotProduct(xRotationMatrix, p2c);
-			// const p3d = matrixDotProduct(xRotationMatrix, p3c);
-			
 			const compositionMatrix = [
 				[
 					cosZ, sinZ, xCenter - (yCenter * sinZ) - (xCenter * cosZ)
@@ -104,38 +84,37 @@ export const rotateGrid = (grid, options) => {
 
 			console.log(JSON.stringify(compositionMatrix, null, 4));
 
-			const p0d = matrixDotProduct(compositionMatrix, p0);
-			const p1d = matrixDotProduct(compositionMatrix, p1);
-			const p2d = matrixDotProduct(compositionMatrix, p2);
-			const p3d = matrixDotProduct(compositionMatrix, p3);
+			const p0α = matrixDotProduct(compositionMatrix, p0);
+			const p1α = matrixDotProduct(compositionMatrix, p1);
+			const p2α = matrixDotProduct(compositionMatrix, p2);
+			const p3α = matrixDotProduct(compositionMatrix, p3);
 
-			const centerX = (p0d[0][0] + p2d[0][0]) / 2;
-			const centerY = (p0d[1][0] + p2d[1][0]) / 2;
+			const centerX = (p0α[0][0] + p2α[0][0]) / 2;
+			const centerY = (p0α[1][0] + p2α[1][0]) / 2;
 
-			const fillStyle = `hsl(${110 + 0.4 * centerX + 0.4 * centerY}, 60%, ${
-				7.5 + 0.275 * centerY
-			}%)`;
+			const fillStyle = `hsl(${120 + 0.125 * centerX + 0.125 * centerY}, ${
+				50 + 0.05 * centerY}%, ${30 + 0.05 * centerY}%)`;
 
 			if (y === 0) {
 				if (x === 0) {
-					cornerCoords.push([p0d[0][0], p0d[1][0]]);
+					cornerCoords.push([p0α[0][0], p0α[1][0]]);
 				} else if (x === row.length - 1) {
-					cornerCoords.push([p1d[0][0], p1d[1][0]]);
+					cornerCoords.push([p1α[0][0], p1α[1][0]]);
 				}
 			} else if (y === grid.length - 1) {
 				if (x === 0) {
-					cornerCoords.push([p3d[0][0], p3d[1][0]]);
+					cornerCoords.push([p3α[0][0], p3α[1][0]]);
 				} else if (x === row.length - 1) {
-					cornerCoords.push([p2d[0][0], p2d[1][0]]);
+					cornerCoords.push([p2α[0][0], p2α[1][0]]);
 				}
 			}
 
 			rotatedGrid.push({
 				coords: [
-					[p0d[0][0], p0d[1][0]],
-					[p1d[0][0], p1d[1][0]],
-					[p2d[0][0], p2d[1][0]],
-					[p3d[0][0], p3d[1][0]],
+					[p0α[0][0], p0α[1][0]],
+					[p1α[0][0], p1α[1][0]],
+					[p2α[0][0], p2α[1][0]],
+					[p3α[0][0], p3α[1][0]],
 				],
 				center: [centerX, centerY],
 				fillStyle,

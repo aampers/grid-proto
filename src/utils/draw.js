@@ -1,6 +1,6 @@
 import { rotateGrid } from './grid';
 
-const padding = 150;
+const padding = 300;
 const size = 50;
 
 // export const drawGrid = (grid, options = {}) => (context, frameCount) => {
@@ -13,12 +13,12 @@ export const drawGrid = (originalGrid, options = {}) => (context) => {
 	});
 
 	// const offset = 250 - (cornerCoords[0][1] + cornerCoords[3][1]) / 2;
-	const offset = 250 - (cornerCoords[0][1] + cornerCoords[3][1]) / 2;
+	const offset = 400 - (cornerCoords[0][1] + cornerCoords[3][1]) / 2;
 
 	if (cornerCoords.length) {
 		for (const corner of cornerCoords) {
 			const [cx, cy0] = corner;
-			const cy1 = cy0 + 25;
+			const cy1 = cy0 + 40;
 			const grad = context.createLinearGradient(
 				cx,
 				cy0 + offset,

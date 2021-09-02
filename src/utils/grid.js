@@ -70,25 +70,44 @@ export const rotateGrid = (grid, options) => {
 				[0, 0, 1],
 			];
 
-			const p0a = matrixDotProduct(translateMatrixA, p0);
-			const p1a = matrixDotProduct(translateMatrixA, p1);
-			const p2a = matrixDotProduct(translateMatrixA, p2);
-			const p3a = matrixDotProduct(translateMatrixA, p3);
+			// const p0a = matrixDotProduct(translateMatrixA, p0);
+			// const p1a = matrixDotProduct(translateMatrixA, p1);
+			// const p2a = matrixDotProduct(translateMatrixA, p2);
+			// const p3a = matrixDotProduct(translateMatrixA, p3);
 
-			const p0b = matrixDotProduct(zRotationMatrix, p0a);
-			const p1b = matrixDotProduct(zRotationMatrix, p1a);
-			const p2b = matrixDotProduct(zRotationMatrix, p2a);
-			const p3b = matrixDotProduct(zRotationMatrix, p3a);
+			// const p0b = matrixDotProduct(zRotationMatrix, p0a);
+			// const p1b = matrixDotProduct(zRotationMatrix, p1a);
+			// const p2b = matrixDotProduct(zRotationMatrix, p2a);
+			// const p3b = matrixDotProduct(zRotationMatrix, p3a);
 
-			const p0c = matrixDotProduct(translateMatrixB, p0b);
-			const p1c = matrixDotProduct(translateMatrixB, p1b);
-			const p2c = matrixDotProduct(translateMatrixB, p2b);
-			const p3c = matrixDotProduct(translateMatrixB, p3b);
+			// const p0c = matrixDotProduct(translateMatrixB, p0b);
+			// const p1c = matrixDotProduct(translateMatrixB, p1b);
+			// const p2c = matrixDotProduct(translateMatrixB, p2b);
+			// const p3c = matrixDotProduct(translateMatrixB, p3b);
 
-			const p0d = matrixDotProduct(xRotationMatrix, p0c);
-			const p1d = matrixDotProduct(xRotationMatrix, p1c);
-			const p2d = matrixDotProduct(xRotationMatrix, p2c);
-			const p3d = matrixDotProduct(xRotationMatrix, p3c);
+			// const p0d = matrixDotProduct(xRotationMatrix, p0c);
+			// const p1d = matrixDotProduct(xRotationMatrix, p1c);
+			// const p2d = matrixDotProduct(xRotationMatrix, p2c);
+			// const p3d = matrixDotProduct(xRotationMatrix, p3c);
+			
+			const compositionMatrix = [
+				[
+					cosZ, sinZ, xCenter - (yCenter * sinZ) - (xCenter * cosZ)
+				],
+				[
+					(-sinZ * cosX), (cosZ * cosX), (xCenter * sinZ * cosX) - (yCenter * cosZ * cosX) + (yCenter * cosX) + (sinX)
+				],
+				[
+					sinZ * sinX, -cosZ * sinX, (-xCenter * sinZ * sinX) + (yCenter * cosZ * sinX) - (yCenter * sinX) + cosX
+				]
+			];
+
+			console.log(JSON.stringify(compositionMatrix, null, 4));
+
+			const p0d = matrixDotProduct(compositionMatrix, p0);
+			const p1d = matrixDotProduct(compositionMatrix, p1);
+			const p2d = matrixDotProduct(compositionMatrix, p2);
+			const p3d = matrixDotProduct(compositionMatrix, p3);
 
 			const centerX = (p0d[0][0] + p2d[0][0]) / 2;
 			const centerY = (p0d[1][0] + p2d[1][0]) / 2;

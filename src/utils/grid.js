@@ -46,29 +46,29 @@ export const rotateGrid = (grid, options) => {
 			const p2 = [[x0 + size], [y0 + size], [1]];
 			const p3 = [[x0], [y0 + size], [1]];
 
-			const zRotationMatrix = [
-				[cosZ, sinZ, 0],
-				[-sinZ, cosZ, 0],
-				[0, 0, 1],
-			];
+			// const zRotationMatrix = [
+			// 	[cosZ, sinZ, 0],
+			// 	[-sinZ, cosZ, 0],
+			// 	[0, 0, 1],
+			// ];
 
-			const xRotationMatrix = [
-				[1, 0, 0],
-				[0, cosX, sinX],
-				[0, -sinX, cosX],
-			];
+			// const xRotationMatrix = [
+			// 	[1, 0, 0],
+			// 	[0, cosX, sinX],
+			// 	[0, -sinX, cosX],
+			// ];
 
-			const translateMatrixA = [
-				[1, 0, -xCenter],
-				[0, 1, -yCenter],
-				[0, 0, 1],
-			];
+			// const translateMatrixA = [
+			// 	[1, 0, -xCenter],
+			// 	[0, 1, -yCenter],
+			// 	[0, 0, 1],
+			// ];
 
-			const translateMatrixB = [
-				[1, 0, xCenter],
-				[0, 1, yCenter],
-				[0, 0, 1],
-			];
+			// const translateMatrixB = [
+			// 	[1, 0, xCenter],
+			// 	[0, 1, yCenter],
+			// 	[0, 0, 1],
+			// ];
 
 			const compositionMatrix = [
 				[
@@ -82,8 +82,6 @@ export const rotateGrid = (grid, options) => {
 				]
 			];
 
-			console.log(JSON.stringify(compositionMatrix, null, 4));
-
 			const p0α = matrixDotProduct(compositionMatrix, p0);
 			const p1α = matrixDotProduct(compositionMatrix, p1);
 			const p2α = matrixDotProduct(compositionMatrix, p2);
@@ -92,8 +90,8 @@ export const rotateGrid = (grid, options) => {
 			const centerX = (p0α[0][0] + p2α[0][0]) / 2;
 			const centerY = (p0α[1][0] + p2α[1][0]) / 2;
 
-			const fillStyle = `hsl(${120 + 0.125 * centerX + 0.125 * centerY}, ${
-				50 + 0.05 * centerY}%, ${30 + 0.05 * centerY}%)`;
+			const fillStyle = `hsl(${125 + 0.15 * centerX + 0.15 * centerY}, ${
+				10 + 0.25 * centerY}%, ${30 + 0.05 * centerY}%)`;
 
 			if (y === 0) {
 				if (x === 0) {

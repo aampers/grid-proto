@@ -71,15 +71,20 @@ export const rotateGrid = (grid, options) => {
 			// ];
 
 			const compositionMatrix = [
+				[cosZ, sinZ, xCenter - yCenter * sinZ - xCenter * cosZ],
 				[
-					cosZ, sinZ, xCenter - (yCenter * sinZ) - (xCenter * cosZ)
+					-sinZ * cosX,
+					cosZ * cosX,
+					xCenter * sinZ * cosX - yCenter * cosZ * cosX + yCenter * cosX + sinX,
 				],
 				[
-					(-sinZ * cosX), (cosZ * cosX), (xCenter * sinZ * cosX) - (yCenter * cosZ * cosX) + (yCenter * cosX) + (sinX)
+					sinZ * sinX,
+					-cosZ * sinX,
+					-xCenter * sinZ * sinX +
+						yCenter * cosZ * sinX -
+						yCenter * sinX +
+						cosX,
 				],
-				[
-					sinZ * sinX, -cosZ * sinX, (-xCenter * sinZ * sinX) + (yCenter * cosZ * sinX) - (yCenter * sinX) + cosX
-				]
 			];
 
 			const p0α = matrixDotProduct(compositionMatrix, p0);
@@ -91,7 +96,8 @@ export const rotateGrid = (grid, options) => {
 			const centerY = (p0α[1][0] + p2α[1][0]) / 2;
 
 			const fillStyle = `hsl(${125 + 0.15 * centerX + 0.15 * centerY}, ${
-				10 + 0.25 * centerY}%, ${30 + 0.05 * centerY}%)`;
+				10 + 0.25 * centerY
+			}%, ${30 + 0.05 * centerY}%)`;
 
 			if (y === 0) {
 				if (x === 0) {

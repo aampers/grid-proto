@@ -1,37 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useCanvas from '../../hooks/useCanvas';
-import { useMouseState, useMouseDispatch } from '../../store/mouse/context';
 import {
-	setIsMouseDownAction,
-	setMousePosAction,
-} from '../../store/mouse/actions';
+	usePointerState,
+	usePointerDispatch,
+} from '../../store/pointer/context';
+import {
+	setIsPointerDownAction,
+	setPointerPosAction,
+} from '../../store/pointer/actions';
 import throttle from 'lodash.throttle';
 
 const Canvas = ({ draw, options = {}, ...rest }) => {
 	const { context } = options;
 	const canvasRef = useCanvas(draw, { context });
-	const { isMouseDown } = useMouseState();
-	const dispatch = useMouseDispatch();
+	const { isPointerDown } = usePointerState();
+	const dispatch = usePointerDispatch();
 
-	const handleMouseDown = () => dispatch(setIsMouseDownAction(true));
-	const handleMouseUp = () => dispatch(setIsMouseDownAction(false));
-	const handleMouseEnter = ({ buttons }) =>
-		buttons || dispatch(setIsMouseDownAction(false));
+	const handlePointerDown = () => dispatch(setIsPointerDownAction(true));
+	const handlePointerUp = () => dispatch(setIsPointerDownAction(false));
+	const handlePointerEnter = ({ buttons }) =>
+		buttons || dispatch(setIsPointerDownAction(false));
 
-	const handleMouseMove = throttle((event) => {
-		if (isMouseDown) {
-			dispatch(setMousePosAction([event.clientX, event.clientY]));
+	const handlePointerMove = throttle((event) => {
+		if (isPointerDown) {
+			dispatch(setPointerPosAction([event.clientX, event.clientY]));
 		}
 	}, 16);
 
 	return (
 		<canvas
 			ref={canvasRef}
-			onMouseDown={handleMouseDown}
-			onMouseUp={handleMouseUp}
-			onMouseMove={handleMouseMove}
-			onMouseEnter={handleMouseEnter}
+			onPointerDown={handlePointerDown}
+			onPointerUp={handlePointerUp}
+			onPointerMove={handlePointerMove}
+			onPointerEnter={handlePointerEnter}
 			{...rest}
 		/>
 	);
@@ -54,9 +57,9 @@ export default class canvas extends React.Component{
             previousPointX:'',
             previousPointY:''
         }
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handlePointerDown = this.handlePointerDown.bind(this);
+        this.handlePointerMove = this.handlePointerMove.bind(this);
+        this.handlePointerUp = this.handlePointerUp.bind(this);
     }
     render() {
         return (
@@ -64,27 +67,27 @@ export default class canvas extends React.Component{
                 <canvas id="canvas" ref="canvas"
                         width={640}
                         height={425}
-                        onMouseDown={
+                        onPointerDown={
                             e => {
                                 let nativeEvent = e.nativeEvent;
-                                this.handleMouseDown(nativeEvent);
+                                this.handlePointerDown(nativeEvent);
                             }}
-                        onMouseMove={
+                        onPointerMove={
                             e => {
                                 let nativeEvent = e.nativeEvent;
-                                this.handleMouseMove(nativeEvent);
+                                this.handlePointerMove(nativeEvent);
                             }}    
-                        onMouseUp={
+                        onPointerUp={
                             e => {
                                 let nativeEvent = e.nativeEvent;
-                                this.handleMouseUp(nativeEvent);
+                                this.handlePointerUp(nativeEvent);
                             }}
                 />
             </div>    
         );
     }
 
-    handleMouseDown(event){ //added code here
+    handlePointerDown(event){ //added code here
         console.log(event);    
         this.setState({
             isDown: true,
@@ -101,10 +104,10 @@ export default class canvas extends React.Component{
             ctx.stroke();
         })
     }
-    handleMouseMove(event){
+    handlePointerMove(event){
 
     }
-    handleMouseUp(event){
+    handlePointerUp(event){
         this.setState({
             isDown: false
         });

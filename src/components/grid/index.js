@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // import { useGridState } from '../../store/grid/context';
 import { setup } from '../../utils/grid';
 import { drawGrid } from '../../utils/draw';
-import { useMouseState } from '../../store/mouse/context';
+import { usePointerState } from '../../store/pointer/context';
 import Canvas from '../canvas';
 import './grid.css';
 
@@ -21,16 +21,16 @@ const normalizeRotation = (min, max, deadzone, multiplier) => (
 const normalizeX = normalizeRotation(0, 1.3, 1, -0.001);
 const normalizeZ = normalizeRotation(-Infinity, Infinity, 1, 0.003);
 
-const Grid = (props) => {
+const Grid = () => {
 	const grid = setup();
-	const { mousePosDiff } = useMouseState();
+	const { pointerPosDiff } = usePointerState();
 	const [xRotation, setXRotation] = useState(1);
 	const [zRotation, setZRotation] = useState(1);
 
 	useEffect(() => {
-		setZRotation(normalizeZ(zRotation, mousePosDiff[0]));
-		setXRotation(normalizeX(xRotation, mousePosDiff[1]));
-	}, [mousePosDiff]);
+		setZRotation(normalizeZ(zRotation, pointerPosDiff[0]));
+		setXRotation(normalizeX(xRotation, pointerPosDiff[1]));
+	}, [pointerPosDiff]);
 
 	const options = {
 		xRotation,

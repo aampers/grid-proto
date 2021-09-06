@@ -1,3 +1,5 @@
+// TODO move logic to a usePointer hook
+
 export const pointerReducer = (state, action) => {
 	switch (action.type) {
 		case 'acknowledgeClickEvent': {

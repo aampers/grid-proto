@@ -15,12 +15,8 @@ import throttle from 'lodash.throttle';
 const Canvas = ({ draw, options = {}, ...rest }) => {
 	const { context } = options;
 	const canvasRef = useCanvas(draw, { context });
-	const { isPointerDown, clickEvent } = usePointerState();
+	const { isPointerDown, clickEvent, pointerDownPos: clickLocation } = usePointerState();
 	const dispatch = usePointerDispatch();
-
-	useEffect(() => {
-		if (clickEvent) dispatch(acknowledgeClickEventAction());
-	}, [clickEvent]);
 
 	const handlePointerDown = (event) =>
 		dispatch(

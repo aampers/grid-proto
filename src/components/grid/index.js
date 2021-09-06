@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // import { useGridState } from '../../store/grid/context';
-import { setup } from '../../utils/grid';
+import { setup, transformClickEvent } from '../../utils/grid';
 import { drawGrid } from '../../utils/draw';
-import { usePointerState } from '../../store/pointer/context';
+import { usePointerDispatch, usePointerState } from '../../store/pointer/context';
 import Canvas from '../canvas';
 import './grid.css';
+import { acknowledgeClickEventAction } from '../../store/pointer/actions';
 
 const normalizeRotation = (min, max, deadzone, multiplier) => (
 	previousValue,
@@ -23,19 +24,30 @@ const normalizeZ = normalizeRotation(-Infinity, Infinity, 1, 0.003);
 
 const Grid = () => {
 	const grid = setup();
-	const { pointerPosDiff } = usePointerState();
+	const { pointerPosDiff, clickEvent, pointerDownPos: clickLocation } = usePointerState();
+	const dispatch = usePointerDispatch();
 	const [xRotation, setXRotation] = useState(1);
 	const [zRotation, setZRotation] = useState(1);
+
+	
+	const options = {
+		xRotation,
+		zRotation,
+		padding: 300,
+		size: 50,
+	};
 
 	useEffect(() => {
 		setZRotation(normalizeZ(zRotation, pointerPosDiff[0]));
 		setXRotation(normalizeX(xRotation, pointerPosDiff[1]));
 	}, [pointerPosDiff]);
 
-	const options = {
-		xRotation,
-		zRotation,
-	};
+	useEffect(() => {
+		if (clickEvent) {
+			transformClickEvent(clickLocation, options);
+			dispatch(acknowledgeClickEventAction());
+		};
+	}, [clickEvent]);
 
 	const draw = useCallback(drawGrid(grid, options), [grid]);
 

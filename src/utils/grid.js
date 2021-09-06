@@ -4,6 +4,8 @@ import { matrixDotProduct } from './matrix';
 export const setup = ({ height = 15, width = 15 } = {}) => {
 	const spaces = [];
 
+	console.log('setting up');
+
 	// todo useRef here
 	for (let y = 0; y < height; y++) {
 		const row = [];
@@ -38,7 +40,7 @@ export const rotateGrid = (grid, options) => {
 	for (let row of grid) {
 		for (let space of row) {
 			const { x, y } = space.position;
-
+			
 			const x0 = padding + size * x;
 			const y0 = padding + size * y;
 			const p0 = [[x0], [y0], [1]];
@@ -135,3 +137,15 @@ export const rotateGrid = (grid, options) => {
 		cornerCoords,
 	};
 };
+
+export const transformClickEvent = (clickLocation, options) => {
+	let { padding, size, xRotation, zRotation } = options;
+
+	xRotation = xRotation == null ? -1 : -xRotation;
+	zRotation = -zRotation || -1;
+
+	const sinZ = Math.sin(zRotation);
+	const cosZ = Math.cos(zRotation);
+	const sinX = Math.sin(xRotation);
+	const cosX = Math.cos(xRotation);
+}

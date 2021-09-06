@@ -7,6 +7,7 @@ const PointerDispatchContext = createContext();
 
 export const defaultState = {
 	isPointerDown: false,
+	pointerDownPos: [null, null],
 	lastPointerPos: [0, 0],
 	pointerPos: [0, 0],
 	pointerPosDiff: [0, 0],

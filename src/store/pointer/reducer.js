@@ -1,7 +1,23 @@
 export const pointerReducer = (state, action) => {
 	switch (action.type) {
+		case 'acknowledgeClickEvent': {
+			console.log(`click at ${state.pointerDownPos}`);
+			return { ...state, clickEvent: false };
+		}
 		case 'setIsPointerDown': {
-			return { ...state, isPointerDown: action.value };
+			const { isPointerDown, pointerPos } = action.value;
+			if (isPointerDown) {
+				return { ...state, isPointerDown, pointerDownPos: pointerPos };
+			} else {
+				const { pointerDownPos: lastPointerPos } = state;
+
+				const xDiff = pointerPos[0] - lastPointerPos[0];
+				const yDiff = pointerPos[1] - lastPointerPos[1];
+
+				const clickEvent = xDiff < 5 && yDiff < 5 ? true : false;
+
+				return { ...state, clickEvent, isPointerDown };
+			}
 		}
 
 		case 'setPointerPos': {
